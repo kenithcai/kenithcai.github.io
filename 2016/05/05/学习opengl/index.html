@@ -18,7 +18,7 @@
   <title>学习opengl | kenithcai&#39;s blog</title>
   <meta name="author" content="kenithcai">
   
-  <meta name="description" content="#搭建windows下面的环境GLUT代表OpenGL应用工具包，英文全称为OpenGL Utility Toolkit，是一个和窗口系统无关的软件包，它由Mark Kilgard在SGI时写的。作为AUX库的功能更强大的替代品，用于隐藏不同窗口系统API的复杂性。是一个学习OpenGL编程的一个良">
+  <meta name="description" content="搭建windows下面的环境GLUT代表OpenGL应用工具包，英文全称为OpenGL Utility Toolkit，是一个和窗口系统无关的软件包，它由Mark Kilgard在SGI时写的。作为AUX库的功能更强大的替代品，用于隐藏不同窗口系统API的复杂性。是一个学习OpenGL编程的一个良好">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -89,23 +89,22 @@
     </p>
   <p class="article-time">
     <time datetime="2016-05-05T04:20:55.000Z" itemprop="datePublished">2016-05-05</time>
-    更新日期:<time datetime="2016-05-05T06:42:26.025Z" itemprop="dateModified">2016-05-05</time>
+    Update date:<time datetime="2016-05-05T06:49:26.230Z" itemprop="dateModified">2016-05-05</time>
     
   </p>
 </header>
     <div class="entry">
 		
-        <p>#搭建windows下面的环境<br>GLUT代表OpenGL应用工具包，英文全称为OpenGL Utility Toolkit，是一个和窗口系统无关的软件包，它由Mark Kilgard在SGI时写的。作为AUX库的功能更强大的替代品，用于隐藏不同窗口系统API的复杂性。是一个学习OpenGL编程的一个良好开端。</p>
-<p>##1、安装glut<br>1）、首先下面win下的glut，然后解压，地址如下<br><a href="http://www.opengl.org/resources/libraries/glut/glutdlls37beta.zip" target="_blank" rel="external">http://www.opengl.org/resources/libraries/glut/glutdlls37beta.zipk</a><br>2）、把glut.h头文件放到你的vs/vc/include/GL的目录下，如果没有GL目录，则创建一个，如我的vs目录是D:\vs2012\VC\include\GL</p>
+        <h1 id="搭建windows下面的环境"><a href="#搭建windows下面的环境" class="headerlink" title="搭建windows下面的环境"></a>搭建windows下面的环境</h1><p>GLUT代表OpenGL应用工具包，英文全称为OpenGL Utility Toolkit，是一个和窗口系统无关的软件包，它由Mark Kilgard在SGI时写的。作为AUX库的功能更强大的替代品，用于隐藏不同窗口系统API的复杂性。是一个学习OpenGL编程的一个良好开端。</p>
+<h2 id="1、安装glut"><a href="#1、安装glut" class="headerlink" title="1、安装glut"></a>1、安装glut</h2><p>1）、首先下面win下的glut，然后解压，地址如下<br><a href="http://www.opengl.org/resources/libraries/glut/glutdlls37beta.zip" target="_blank" rel="external">http://www.opengl.org/resources/libraries/glut/glutdlls37beta.zipk</a><br>2）、把glut.h头文件放到你的vs/vc/include/GL的目录下，如果没有GL目录，则创建一个，如我的vs目录是D:\vs2012\VC\include\GL</p>
 <p>3）、把解压得到的glut.lib和glut32.lib放到静态函数库所在文件夹（即与include并排的lib文件夹下）。<br>4）、把解压得到的glut.dll和glut32.dll放到操作系统目录下面的system32文件夹内。（典型的位置为：C:\Windows\System32，如果是64位的话则放在C:\Windows\SysWOW64）</p>
-<p>##2、创建vs工程<br>选择File-&gt;New-&gt;Project，然后选择Win32 ConsoleApplication,选择一个名字，然后按OK。在谈出的对话框左边点Application Settings，找到Empty project并勾上，选择Finish。然后向该工程添加一个代码文件，取名为“OpenGL.cpp”<br>在OpenGL.cpp中包含头文件</p>
+<h2 id="2、创建vs工程"><a href="#2、创建vs工程" class="headerlink" title="2、创建vs工程"></a>2、创建vs工程</h2><p>选择File-&gt;New-&gt;Project，然后选择Win32 ConsoleApplication,选择一个名字，然后按OK。在谈出的对话框左边点Application Settings，找到Empty project并勾上，选择Finish。然后向该工程添加一个代码文件，取名为“OpenGL.cpp”<br>在OpenGL.cpp中包含头文件</p>
 <pre><code>#include \&lt;GL/glut.h&gt;
 #pragma comment(lib,&quot;opengl32.lib&quot;)
 #pragma comment(lib, &quot;glu32.lib&quot;)
 #pragma comment(lib, &quot;glut32.lib&quot;)
 </code></pre><p>也可在工程属性-&gt;配置属性-&gt;连接器-&gt;命令行，的附加选项中加入上述三个lib文件</p>
-<p>###添加main.cpp并编写代码</p>
-<p> #include \<gl glut.h=""><br>void myDisplay(void)<br>{<br>    glClear(GL_COLOR_BUFFER_BIT);<br>    glRectf(-0.5f, -0.5f, 0.5f, 0.5f);<br>    glFlush();<br>}<br>int main(int argc, char *argv[])<br>{<br>    glutInit(&amp;argc, argv);<br>    glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);<br>    glutInitWindowPosition(100, 100);<br>    glutInitWindowSize(400, 400);<br>    glutCreateWindow(“第一个OpenGL程序”);<br>    glutDisplayFunc(&amp;myDisplay);<br>    glutMainLoop();<br>    return 0;<br>}<br>运行效果：<br><img src="./_image/2016-05-05 14-34-44.jpg" alt=""></gl></p>
+<h3 id="添加main-cpp并编写代码"><a href="#添加main-cpp并编写代码" class="headerlink" title="添加main.cpp并编写代码"></a>添加main.cpp并编写代码</h3><p> #include \<gl glut.h=""><br>void myDisplay(void)<br>{<br>    glClear(GL_COLOR_BUFFER_BIT);<br>    glRectf(-0.5f, -0.5f, 0.5f, 0.5f);<br>    glFlush();<br>}<br>int main(int argc, char *argv[])<br>{<br>    glutInit(&amp;argc, argv);<br>    glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);<br>    glutInitWindowPosition(100, 100);<br>    glutInitWindowSize(400, 400);<br>    glutCreateWindow(“第一个OpenGL程序”);<br>    glutDisplayFunc(&amp;myDisplay);<br>    glutMainLoop();<br>    return 0;<br>}<br>运行效果：<br><img src="./_image/2016-05-05 14-34-44.jpg" alt=""></gl></p>
 
     </div>
     <footer>
@@ -188,7 +187,7 @@ with(document)0[
     <aside id="sidebar" class="alignright">
   <div class="search">
   <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="search" name="q" results="0" placeholder="Search">
     <input type="hidden" name="q" value="site:yoursite.com">
   </form>
 </div>
