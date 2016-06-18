@@ -15,15 +15,16 @@
 	})();
 	</script>
   
-  <title>Hello World | kenithcai&#39;s blog</title>
+  <title>cocos2dx的curl兼容ipv6办法 | kenithcai&#39;s blog</title>
   <meta name="author" content="kenithcai">
   
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in ">
+  <meta name="description" content="&amp;#x66FF;&amp;#x6362;2dx3.11&amp;#x7684;curl&amp;#x5E93;3.11&amp;#x7248;&amp;#x672C;&amp;#x7684;&amp;#x94FE;&amp;#x63A5;:http://www.cocos2d-x.org/filedown/cocos2d-x-3.11.1.zip
+&amp;#x76F4">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Hello World"/>
+  <meta property="og:title" content="cocos2dx的curl兼容ipv6办法"/>
   <meta property="og:site_name" content="kenithcai&#39;s blog"/>
 
   
@@ -81,34 +82,162 @@
   <div class="post-content">
     <header class="article-info clearfix">
   <h1 itemprop="name">
-	Hello World
+	cocos2dx的curl兼容ipv6办法
   </h1>
   <p class="article-author">By
     
       <a href="http://yoursite.com" title="kenithcai">kenithcai</a>
     </p>
   <p class="article-time">
-    <time datetime="2016-06-15T04:01:38.000Z" itemprop="datePublished">2016-06-15</time>
-    Update date:<time datetime="2016-04-25T02:29:56.000Z" itemprop="dateModified">2016-04-25</time>
+    <time datetime="2016-06-18T10:09:30.000Z" itemprop="datePublished">2016-06-18</time>
+    Update date:<time datetime="2016-06-18T10:28:52.000Z" itemprop="dateModified">2016-06-18</time>
     
   </p>
 </header>
     <div class="entry">
 		
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <h1 id="&#x66FF;&#x6362;2dx3-11&#x7684;curl&#x5E93;"><a href="#&#x66FF;&#x6362;2dx3-11&#x7684;curl&#x5E93;" class="headerlink" title="&#x66FF;&#x6362;2dx3.11&#x7684;curl&#x5E93;"></a>&#x66FF;&#x6362;2dx3.11&#x7684;curl&#x5E93;</h1><p>3.11&#x7248;&#x672C;&#x7684;&#x94FE;&#x63A5;:<a href="http://www.cocos2d-x.org/filedown/cocos2d-x-3.11.1.zip" target="_blank" rel="external">http://www.cocos2d-x.org/filedown/cocos2d-x-3.11.1.zip</a></p>
+<p>&#x76F4;&#x63A5;&#x4E0B;&#x8F7D;&#x6700;&#x65B0;&#x7684;&#x5F15;&#x64CE;&#x3002;&#x62FF;&#x91CC;&#x9762;&#x7684;&#x5173;&#x4E8E;curl&#x7684;&#x5E93;&#x8DDF;&#x6E90;&#x7801;&#x5BF9;&#x65E7;&#x9879;&#x76EE;&#x8FDB;&#x884C;&#x66FF;&#x6362;&#x3002;</p>
+<p>&#x6CE8;&#x610F;:&#x65E7;&#x7248;&#x672C;&#x7684;cocos2dx&#x53EA;&#x6709;libhcurl.a&#xFF0C;&#x800C;&#x65B0;&#x7248;&#x672C;&#x7684;&#x662F;&#x6709;libcurl.a, libssl.a, libcrypto.a, &#x4E09;&#x4E2A;&#x90FD;&#x8981;&#x52A0;&#x8FDB;&#x53BB;&#xFF0C;&#x800C;&#x4E14;&#x8FD8;&#x8981;&#x52A0;&#x5230;&#x9879;&#x76EE;&#x7684;&#x5F15;&#x7528;&#x3002;</p>
+<h1 id="&#x5224;&#x5B9A;&#x5F53;&#x524D;&#x7F51;&#x7EDC;&#x73AF;&#x5883;"><a href="#&#x5224;&#x5B9A;&#x5F53;&#x524D;&#x7F51;&#x7EDC;&#x73AF;&#x5883;" class="headerlink" title="&#x5224;&#x5B9A;&#x5F53;&#x524D;&#x7F51;&#x7EDC;&#x73AF;&#x5883;"></a>&#x5224;&#x5B9A;&#x5F53;&#x524D;&#x7F51;&#x7EDC;&#x73AF;&#x5883;</h1><pre><code>
+enum TLocalIPStack {
+    ELocalIPStack_None = 0,
+    ELocalIPStack_IPv4 = 1,
+    ELocalIPStack_IPv6 = 2,
+    ELocalIPStack_Dual = 3,
+};
 
+// &#x5224;&#x5B9A;&#x5F53;&#x524D;&#x7F51;&#x7EDC;&#x73AF;&#x5883;
+TLocalIPStack NetIPV::getIpv()
+{
+    const char* ipaddr = &quot;www.baidu.com&quot;;
+
+    TLocalIPStack type;
+
+    struct addrinfo *answer, hint, *curr;
+
+    memset(&amp;hint, 0, sizeof(hint));
+    hint.ai_family = AF_UNSPEC;
+    hint.ai_socktype = SOCK_STREAM;
+
+    // &#x5904;&#x7406;&#x540D;&#x5B57;&#x5230;&#x5730;&#x5740;&#x4EE5;&#x53CA;&#x670D;&#x52A1;&#x5230;&#x7AEF;&#x53E3;&#x8FD9;&#x4E24;&#x79CD;&#x8F6C;&#x6362;&#xFF0C;&#x8FD4;&#x56DE;&#x7684;&#x662F;&#x4E00;&#x4E2A;sockaddr&#x7ED3;&#x6784;&#x7684;&#x94FE;&#x8868;
+    int ret = getaddrinfo(ipaddr, NULL,&amp;hint, &amp;answer);
+
+    if (ret != 0) type = ELocalIPStack_None;
+
+    else
+    {
+        for (curr = answer; curr != NULL; curr = curr-&gt;ai_next) {
+            switch (curr-&gt;ai_family)
+            {
+                case AF_UNSPEC:
+                    //do something here
+                    break;
+                case AF_INET:
+                    type = ELocalIPStack_IPv4;
+                    break;
+                case AF_INET6:
+                    type = ELocalIPStack_IPv6;
+                    break;
+                default:
+                    break;
+            }
+            if (type != ELocalIPStack_None) break;
+        }
+    }
+
+    freeaddrinfo(answer);
+
+    return type;
+}
+</code></pre>
+
+<h1 id="&#x66FF;&#x6362;&#x5B57;&#x7B26;&#x4E32;"><a href="#&#x66FF;&#x6362;&#x5B57;&#x7B26;&#x4E32;" class="headerlink" title="&#x66FF;&#x6362;&#x5B57;&#x7B26;&#x4E32;"></a>&#x66FF;&#x6362;&#x5B57;&#x7B26;&#x4E32;</h1><pre><code>
+// &#x66FF;&#x6362;&#x5B57;&#x7B26;&#x4E32;
+void NetIPV::replaceStr(std::string &amp;s1, const std::string &amp;s2, const std::string &amp;s3)
+{
+    std::string::size_type pos=0;
+    std::string::size_type a=s2.size();
+    std::string::size_type b=s3.size();
+    while((pos = s1.find(s2, pos)) != std::string::npos)
+    {
+        s1.replace(pos, a, s3);
+        pos += b;
+    }
+}
+</code></pre>
+
+<h1 id="&#x5206;&#x5272;&#x5B57;&#x7B26;&#x4E32;"><a href="#&#x5206;&#x5272;&#x5B57;&#x7B26;&#x4E32;" class="headerlink" title="&#x5206;&#x5272;&#x5B57;&#x7B26;&#x4E32;"></a>&#x5206;&#x5272;&#x5B57;&#x7B26;&#x4E32;</h1><pre><code>
+// &#x5206;&#x5272;&#x5B57;&#x7B26;&#x4E32;
+std::vector<std::string> NetIPV::split(std::string str,std::string pattern)
+{
+    std::string::size_type pos;
+    std::vector<std::string> result;
+    str+=pattern;//&#x6269;&#x5C55;&#x5B57;&#x7B26;&#x4E32;&#x4EE5;&#x65B9;&#x4FBF;&#x64CD;&#x4F5C;
+    size_t size=str.size();
+
+    for(size_t i=0; i<size; i++)="" {="" pos="str.find(pattern,i);" if(pos<size)="" std::string="" s="str.substr(i,pos-i);" result.push_back(s);="" i="pos+pattern.size()-1;" }="" return="" result;="" <="" code=""></size;></std::string></std::string></code></pre>
+
+<h1 id="http&#x94FE;&#x63A5;&#x7684;&#x8F6C;&#x6362;"><a href="#http&#x94FE;&#x63A5;&#x7684;&#x8F6C;&#x6362;" class="headerlink" title="http&#x94FE;&#x63A5;&#x7684;&#x8F6C;&#x6362;"></a>http&#x94FE;&#x63A5;&#x7684;&#x8F6C;&#x6362;</h1><p>&#x6211;&#x4EEC;&#x7684;&#x8FDE;&#x63A5;&#x662F;ipv4&#x7684;&#x8FDE;&#x63A5;&#x5730;&#x5740;,&#x5982;:<a href="http://192.168.0.1/xxxxxx,http://192.168.0.1:80/xxxx" target="_blank" rel="external">http://192.168.0.1/xxxxxx,http://192.168.0.1:80/xxxx</a></p>
+<pre><code>
+// &#x8F6C;&#x6362;http&#x94FE;&#x63A5;
+std::string NetIPV::getIpvUrl(const char *url)
+{
+    std::string tmp = url;
+
+    TLocalIPStack type = NetIPV::getIpv();
+    if (type == ELocalIPStack_IPv4)
+    {
+        tmp = url;
+    }else if(type == ELocalIPStack_IPv6)
+    {
+        std::string oIp;
+        // &#x5206;&#x5272;&#x94FE;&#x63A5;
+        std::vector<std::string> list = NetIPV::split(url, &quot;/&quot;);
+
+        // &#x5FAA;&#x73AF;&#x627E;&#x51FA;ip&#x5730;&#x5740;
+        std::vector<std::string>::iterator it = list.begin();
+        for (; it != list.end(); ++it)
+        {
+            // &#x6709;&#x53EF;&#x80FD;&#x6709;&#x7AEF;&#x53E3;&#x53F7;,&#x9700;&#x8981;&#x518D;&#x5206;&#x5272;&#x4E00;&#x6B21;
+            std::vector<std::string> tmpList = NetIPV::split(*it, &quot;:&quot;);
+            std::vector<std::string>::iterator tmpIt = tmpList.begin();
+            for (; tmpIt != tmpList.end(); ++tmpIt)
+            {
+                // &#x5224;&#x65AD;&#x662F;&#x5426;ip&#x5730;&#x5740;
+                if (INADDR_NONE != inet_addr(tmpIt-&gt;c_str()))
+                {
+                    std::string::size_type pos = tmpIt-&gt;find(&quot;.&quot;);
+                    if (pos != std::string::npos)
+                    {
+                        oIp = *tmpIt;
+                        break;
+                    }
+                }
+                if (oIp != &quot;&quot;) break;
+            }
+
+
+        }
+        // &#x5C06;v4&#x5730;&#x5740;&#x6539;&#x6210;v6&#x5730;&#x5740;
+        char nIp[256] = {0};
+        sprintf(nIp, &quot;[64:ff9b::%s]&quot;, oIp.c_str());
+
+        // &#x66FF;&#x6362;&#x5730;&#x5740;&#x4E2D;&#x7684;v4&#x5730;&#x5740;&#x6539;&#x6210;v6
+        NetIPV::replaceStr(tmp, oIp, nIp);
+    }
+    return tmp;
+}
+</std::string></std::string></std::string></std::string></code></pre>
     </div>
     <footer>
         
         
+  
+  <div class="tags">
+    <a href="/tags/欢迎指导/">欢迎指导</a>
+  </div>
+
 		<div class="bdsharebuttonbox">
 	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
 	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
@@ -154,10 +283,8 @@ with(document)0[
 
  <nav id="pagination" >
     
-    <a href="/2016/06/18/socket兼容ipv6/" class="alignleft prev" title="socket兼容ipv6">socket兼容ipv6</a>
     
-    
-    <a href="/2016/05/06/opengl学习笔记/" class="alignright next" title="opeengl学习笔记">opeengl学习笔记</a>
+    <a href="/2016/06/18/socket兼容ipv6/" class="alignright next" title="socket兼容ipv6">socket兼容ipv6</a>
     
     <div class="clearfix"></div>
 </nav>
@@ -167,7 +294,7 @@ with(document)0[
 	
 	<section id="comment">
 		<!-- 多说评论框 start -->
-		<div class="ds-thread" data-thread-key="2016/06/15/hello-world/" data-title="Hello World" data-url="http://yoursite.com/2016/06/15/hello-world/"></div>
+		<div class="ds-thread" data-thread-key="2016/06/18/cocos2dx的curl兼容ipv6办法/" data-title="cocos2dx的curl兼容ipv6办法" data-url="http://yoursite.com/2016/06/18/cocos2dx的curl兼容ipv6办法/"></div>
 		<!-- 多说评论框 end -->
 		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 		<script type="text/javascript">

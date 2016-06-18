@@ -15,15 +15,18 @@
 	})();
 	</script>
   
-  <title>Hello World | kenithcai&#39;s blog</title>
+  <title>socket兼容ipv6 | kenithcai&#39;s blog</title>
   <meta name="author" content="kenithcai">
   
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in ">
+  <meta name="description" content="&amp;#x5224;&amp;#x5B9A;&amp;#x5F53;&amp;#x524D;&amp;#x7684;&amp;#x7F51;&amp;#x7EDC;&amp;#x73AF;&amp;#x5883;&amp;#x662F;v4&amp;#x8FD8;&amp;#x662F;v6
+enum TLocalIPStack {
+    ELocalIPStack_None = 0,
+">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Hello World"/>
+  <meta property="og:title" content="socket兼容ipv6"/>
   <meta property="og:site_name" content="kenithcai&#39;s blog"/>
 
   
@@ -81,34 +84,146 @@
   <div class="post-content">
     <header class="article-info clearfix">
   <h1 itemprop="name">
-	Hello World
+	socket兼容ipv6
   </h1>
   <p class="article-author">By
     
       <a href="http://yoursite.com" title="kenithcai">kenithcai</a>
     </p>
   <p class="article-time">
-    <time datetime="2016-06-15T04:01:38.000Z" itemprop="datePublished">2016-06-15</time>
-    Update date:<time datetime="2016-04-25T02:29:56.000Z" itemprop="dateModified">2016-04-25</time>
+    <time datetime="2016-06-18T10:06:11.000Z" itemprop="datePublished">2016-06-18</time>
+    Update date:<time datetime="2016-06-18T10:08:10.000Z" itemprop="dateModified">2016-06-18</time>
     
   </p>
 </header>
     <div class="entry">
 		
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <h1 id="&#x5224;&#x5B9A;&#x5F53;&#x524D;&#x7684;&#x7F51;&#x7EDC;&#x73AF;&#x5883;&#x662F;v4&#x8FD8;&#x662F;v6"><a href="#&#x5224;&#x5B9A;&#x5F53;&#x524D;&#x7684;&#x7F51;&#x7EDC;&#x73AF;&#x5883;&#x662F;v4&#x8FD8;&#x662F;v6" class="headerlink" title="&#x5224;&#x5B9A;&#x5F53;&#x524D;&#x7684;&#x7F51;&#x7EDC;&#x73AF;&#x5883;&#x662F;v4&#x8FD8;&#x662F;v6"></a>&#x5224;&#x5B9A;&#x5F53;&#x524D;&#x7684;&#x7F51;&#x7EDC;&#x73AF;&#x5883;&#x662F;v4&#x8FD8;&#x662F;v6</h1><pre><code>
+enum TLocalIPStack {
+    ELocalIPStack_None = 0,
+    ELocalIPStack_IPv4 = 1,
+    ELocalIPStack_IPv6 = 2,
+    ELocalIPStack_Dual = 3,
+};
 
+TLocalIPStack getIpv()
+{
+
+      TLocalIPStack type; 
+
+    struct addrinfo *answer, hint, *curr;
+    memset(&amp;hint, 0, sizeof(hint));
+    hint.ai_family = AF_UNSPEC;
+    hint.ai_socktype = SOCK_STREAM;
+
+    // &#x89E3;&#x91CA;&#x4E00;&#x4E2A;&#x5730;&#x5740; &#x5982;:&#x767E;&#x5EA6;
+    const char* ipaddr = &quot;www.baidu.com&quot;;
+    // &#x5904;&#x7406;&#x540D;&#x5B57;&#x5230;&#x5730;&#x5740;&#x4EE5;&#x53CA;&#x670D;&#x52A1;&#x5230;&#x7AEF;&#x53E3;&#x8FD9;&#x4E24;&#x79CD;&#x8F6C;&#x6362;&#xFF0C;&#x8FD4;&#x56DE;&#x7684;&#x662F;&#x4E00;&#x4E2A;sockaddr&#x7ED3;&#x6784;&#x7684;&#x94FE;&#x8868;
+    int ret = getaddrinfo(ipaddr, NULL,&amp;hint, &amp;answer);
+
+    if (ret != 0) type = ELocalIPStack_None;
+
+    else
+    {
+        for (curr = answer; curr != NULL; curr = curr-&gt;ai_next) {
+            switch (curr-&gt;ai_family)
+            {
+                case AF_UNSPEC:
+                    //do something here
+                    break;
+                case AF_INET:
+                    type = ELocalIPStack_IPv4;
+                    break;
+                case AF_INET6:
+                    type = ELocalIPStack_IPv6;
+                    break;
+                default:
+                    break;
+            }
+            if (type != ELocalIPStack_None) break;
+        }
+    }
+
+    freeaddrinfo(answer);
+
+    return type;
+}
+
+</code></pre>
+
+<h1 id="ipv4-socket"><a href="#ipv4-socket" class="headerlink" title="ipv4 socket"></a>ipv4 socket</h1><pre><code>
+    CCSocket *socketObj = sharedSocket();
+    struct sockaddr_in sa;
+    struct hostent* hp;
+
+    hp = (hostent*)gethostbyname(socketObj-&gt;m_szIP.c_str());
+    if(!hp){
+        printf( &quot;&#x8FD4;&#x56DE;&#x4E3B;&#x673A;&#x4FE1;&#x606F;&#x5931;&#x8D25;\n&quot; );
+        return NULL;
+    }
+    memset(&amp;sa, 0, sizeof(sa));
+    memcpy((char*)&amp;sa.sin_addr, hp-&gt;h_addr, hp-&gt;h_length);
+    sa.sin_family = AF_INET ; // ipv4
+    sa.sin_port = htons(socketObj-&gt;m_nPort);
+
+    int socketId = socket(sa.sin_family, SOCK_STREAM, 0);
+
+    if(socketId &lt; 0)
+    {
+        printf( &quot;&#x521B;&#x5EFA;socket&#x5931;&#x8D25;\n&quot; );
+        return NULL;
+    }
+
+    const int socket_error = -1;
+    if(::connect(socketId, (sockaddr*)&amp;sa, sizeof(sockaddr)) == socket_error)
+    {
+        printf( &quot;&#x8FDE;&#x63A5;socket&#x5931;&#x8D25;\n&quot; );                    
+        return NULL;
+    }
+
+</code></pre>
+
+<h1 id="ipv6-socket"><a href="#ipv6-socket" class="headerlink" title="ipv6 socket"></a>ipv6 socket</h1><pre><code>
+    CCSocket *socketObj = sharedSocket();
+
+    // &#x5C06;&#x539F;&#x6765;&#x7684;v4&#x7684;ip&#x8F6C;&#x6210;v6&#x5730;&#x5740;
+    char ipv6_str[128] = {0};
+    sprintf(ipv6_str, &quot;64:ff9b::%s&quot;,socketObj-&gt;m_szIP.c_str());
+
+    struct in6_addr ipv6_addr = {0};
+    int v6_r = inet_pton(AF_INET6, ipv6_str, &amp;ipv6_addr);
+
+    struct sockaddr_in6 v6_addr = {0};
+    v6_addr.sin6_family = AF_INET6; // ipv6
+    v6_addr.sin6_port = htons(socketObj-&gt;m_nPort);
+    v6_addr.sin6_addr = ipv6_addr;
+
+    //socket connect
+    int socketId = socket(AF_INET6, SOCK_STREAM, 0);
+    if(socketId &lt; 0)
+    {
+        printf( &quot;&#x521B;&#x5EFA;socket&#x5931;&#x8D25;\n&quot; );
+        return NULL;
+    }
+
+    std::string v6_error;
+
+    if (0 != ::connect(socketId, (sockaddr*)&amp;v6_addr, 28))
+    {
+        string v6_error = strerror(errno);
+        printf(&quot;error = %s\n&quot;,v6_error.c_str());
+        return NULL;
+    }
+</code></pre>
     </div>
     <footer>
         
         
+  
+  <div class="tags">
+    <a href="/tags/这是我针对兼容ipv6的socket解决办法-欢迎指导/">这是我针对兼容ipv6的socket解决办法,欢迎指导</a>
+  </div>
+
 		<div class="bdsharebuttonbox">
 	<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
 	<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
@@ -154,10 +269,10 @@ with(document)0[
 
  <nav id="pagination" >
     
-    <a href="/2016/06/18/socket兼容ipv6/" class="alignleft prev" title="socket兼容ipv6">socket兼容ipv6</a>
+    <a href="/2016/06/18/cocos2dx的curl兼容ipv6办法/" class="alignleft prev" title="cocos2dx的curl兼容ipv6办法">cocos2dx的curl兼容ipv6办法</a>
     
     
-    <a href="/2016/05/06/opengl学习笔记/" class="alignright next" title="opeengl学习笔记">opeengl学习笔记</a>
+    <a href="/2016/06/15/hello-world/" class="alignright next" title="Hello World">Hello World</a>
     
     <div class="clearfix"></div>
 </nav>
@@ -167,7 +282,7 @@ with(document)0[
 	
 	<section id="comment">
 		<!-- 多说评论框 start -->
-		<div class="ds-thread" data-thread-key="2016/06/15/hello-world/" data-title="Hello World" data-url="http://yoursite.com/2016/06/15/hello-world/"></div>
+		<div class="ds-thread" data-thread-key="2016/06/18/socket兼容ipv6/" data-title="socket兼容ipv6" data-url="http://yoursite.com/2016/06/18/socket兼容ipv6/"></div>
 		<!-- 多说评论框 end -->
 		<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 		<script type="text/javascript">
