@@ -92,7 +92,7 @@ enum TLocalIPStack {
     </p>
   <p class="article-time">
     <time datetime="2016-06-18T10:06:11.000Z" itemprop="datePublished">2016-06-18</time>
-    Update date:<time datetime="2016-06-18T10:08:10.000Z" itemprop="dateModified">2016-06-18</time>
+    Update date:<time datetime="2016-06-27T08:48:00.000Z" itemprop="dateModified">2016-06-27</time>
     
   </p>
 </header>
@@ -215,6 +215,76 @@ TLocalIPStack getIpv()
         return NULL;
     }
 </code></pre>
+
+<p>#27&#x53F7;&#x8865;&#x5145;<br>&#x8F6C;&#x6362;v6&#x5730;&#x5740;&#x7684;&#x65F6;&#x5019;&#x4F7F;&#x7528;&#x5E95;&#x5C42;api</p>
+<pre><code>
+// &#x66FF;&#x6362;http&#x8FDE;&#x63A5;&#x7684;&#x5730;&#x5740;
+std::string NetIPV::getIpvUrl(const char *url)
+{
+    std::string tmp = url;
+    TLocalIPStack type = NetIPV::getIpv();
+    if (type == ELocalIPStack_IPv4)
+    {
+        tmp = url;
+    }else if(type == ELocalIPStack_IPv6)
+    {
+        std::string oIp;
+        // &#x5206;&#x5272;&#x94FE;&#x63A5;
+        std::vector<std::string> list = NetIPV::split(url, &quot;/&quot;);
+        // &#x5FAA;&#x73AF;&#x627E;&#x51FA;ip&#x5730;&#x5740;
+        std::vector<std::string>::iterator it = list.begin();
+        for (; it != list.end(); ++it)
+        {
+            // &#x6709;&#x53EF;&#x80FD;&#x6709;&#x7AEF;&#x53E3;&#x53F7;,&#x9700;&#x8981;&#x518D;&#x5206;&#x5272;&#x4E00;&#x6B21;
+            std::vector<std::string> tmpList = NetIPV::split(*it, &quot;:&quot;);
+            std::vector<std::string>::iterator tmpIt = tmpList.begin();
+            for (; tmpIt != tmpList.end(); ++tmpIt)
+            {
+                // &#x5224;&#x65AD;&#x662F;&#x5426;ip&#x5730;&#x5740;
+                if (INADDR_NONE != inet_addr(tmpIt-&gt;c_str()))
+                {
+                    std::string::size_type pos = tmpIt-&gt;find(&quot;.&quot;);
+                    if (pos != std::string::npos)
+                    {
+                        oIp = *tmpIt;
+                        break;
+                    }
+                }
+                if (oIp != &quot;&quot;) break;
+            }
+        }
+        if (oIp == &quot;&quot;)return tmp;
+        char nIp[128] = {0};
+        sprintf(nIp, &quot;[%s]&quot;,NetIPV::getIPv6Addr(oIp.c_str()).c_str());
+        // &#x66FF;&#x6362;&#x5730;&#x5740;&#x4E2D;&#x7684;v4&#x5730;&#x5740;&#x6539;&#x6210;v6
+        NetIPV::replaceStr(tmp, oIp, nIp);
+    }
+    return tmp;
+}
+
+// &#x4F20;&#x5165;v4 ip&#x83B7;&#x5F97;v6&#x5730;&#x5740;
+std::string NetIPV::getIPv6Addr(const char *ip)
+{
+    char nIp[128];
+    {
+        struct addrinfo hints, *res, *res0;
+        int error;
+        memset(&amp;hints, 0, sizeof(hints));
+        hints.ai_family = PF_UNSPEC;
+        hints.ai_socktype = SOCK_STREAM;
+        hints.ai_flags = AI_DEFAULT;
+        error = getaddrinfo(ip, &quot;http&quot;, &amp;hints, &amp;res0);
+        for (res = res0; res; res = res-&gt;ai_next)
+        {
+            inet_ntop(AF_INET6,
+                      &amp;(((struct sockaddr_in6 *)(res-&gt;ai_addr))-&gt;sin6_addr),
+                      nIp, 128);
+            break;
+        }
+    }
+    return nIp;
+}
+</std::string></std::string></std::string></std::string></code></pre>
     </div>
     <footer>
         
